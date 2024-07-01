@@ -12,5 +12,4 @@ router.delete('/:id', offreController.deleteOffre);
 router.get('/offre/search', offreController.searchJobsByIntitule);
 router.get('/offre/:userId', offreController.GetOffreByIduser);
 
-
 export default router;

@@ -22,9 +22,9 @@ describe('Offre d\'emploi API', () => {
         photo: 'url_de_la_photo',
         tags: ['développement', 'full-stack'],
         skills: ['Node.js', 'React', 'MongoDB'],
-        userId: '12345'
+        userId: '12345',
       });
-  
+
     expect(res.statusCode).toEqual(201);
     expect(res.body).toHaveProperty('data');
   }, 10000); // Increase timeout to 10000ms
@@ -40,7 +40,7 @@ describe('Offre d\'emploi API', () => {
       photo: 'url_de_la_photo',
       tags: ['développement', 'full-stack'],
       skills: ['Node.js', 'React', 'MongoDB'],
-      userId: '12345'
+      userId: '12345',
     });
 
     const res = await request(app).get('/api/offre');
@@ -59,7 +59,7 @@ describe('Offre d\'emploi API', () => {
       photo: 'url_de_la_photo',
       tags: ['développement', 'full-stack'],
       skills: ['Node.js', 'React', 'MongoDB'],
-      userId: '12345'
+      userId: '12345',
     });
 
     const res = await request(app).get(`/api/offre/${job._id}`);
@@ -78,15 +78,13 @@ describe('Offre d\'emploi API', () => {
       photo: 'url_de_la_photo',
       tags: ['développement', 'full-stack'],
       skills: ['Node.js', 'React', 'MongoDB'],
-      userId: '12345'
+      userId: '12345',
     });
 
-    const res = await request(app)
-      .put(`/api/offre/${job._id}`)
-      .send({
-        intitule: 'Développeur Frontend',
-        salaire: 90000
-      });
+    const res = await request(app).put(`/api/offre/${job._id}`).send({
+      intitule: 'Développeur Frontend',
+      salaire: 90000,
+    });
 
     expect(res.statusCode).toEqual(200);
     expect(res.body.data.intitule).toBe('Développeur Frontend');
@@ -104,7 +102,7 @@ describe('Offre d\'emploi API', () => {
       photo: 'url_de_la_photo',
       tags: ['développement', 'full-stack'],
       skills: ['Node.js', 'React', 'MongoDB'],
-      userId: '12345'
+      userId: '12345',
     });
 
     const res = await request(app).delete(`/api/offre/${job._id}`);
@@ -122,7 +120,7 @@ describe('Offre d\'emploi API', () => {
       photo: 'url_de_la_photo',
       tags: ['développement', 'full-stack'],
       skills: ['Node.js', 'React', 'MongoDB'],
-      userId: '12345'
+      userId: '12345',
     });
 
     const res = await request(app).get('/api/offre/offre/12345');

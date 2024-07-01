@@ -1,6 +1,14 @@
 // tests/unit/offreDemploiController.test.js
 import mongoose from 'mongoose';
-import { createOffre, getAllOffres, getOffreById, updateOffre, deleteOffre, searchJobsByIntitule, GetOffreByIduser } from '../../src/controllers/offreDemploiController';
+import {
+  createOffre,
+  getAllOffres,
+  getOffreById,
+  updateOffre,
+  deleteOffre,
+  searchJobsByIntitule,
+  GetOffreByIduser,
+} from '../../src/controllers/offreDemploiController';
 import OffreEmploi from '../../src/models/OffreDemploi';
 
 jest.mock('../../src/models/OffreDemploi');
@@ -12,23 +20,24 @@ describe('Offre d\'emploi Controller', () => {
         body: {
           intitule: 'Développeur Full Stack',
           typeOffre: 'CDI',
-          description: 'Opportunité passionnante pour un développeur Full Stack!',
+          description:
+            'Opportunité passionnante pour un développeur Full Stack!',
           workplaceType: 'Remote',
           entrepriseNom: 'Ma Super Entreprise',
           salaire: 80000,
           photo: 'url_de_la_photo',
           tags: ['développement', 'full-stack'],
           skills: ['Node.js', 'React', 'MongoDB'],
-          userId: '12345'
-        }
+          userId: '12345',
+        },
       };
       const res = {
         status: jest.fn().mockReturnThis(),
-        json: jest.fn()
+        json: jest.fn(),
       };
       const saveMock = jest.fn().mockResolvedValue(req.body);
       OffreEmploi.mockImplementation(() => ({
-        save: saveMock
+        save: saveMock,
       }));
       await createOffre(req, res);
       expect(res.status).toHaveBeenCalledWith(201);
@@ -41,7 +50,7 @@ describe('Offre d\'emploi Controller', () => {
       const req = {};
       const res = {
         status: jest.fn().mockReturnThis(),
-        json: jest.fn()
+        json: jest.fn(),
       };
       const offres = [{ intitule: 'Développeur Full Stack' }];
       OffreEmploi.find.mockResolvedValue(offres);
@@ -51,5 +60,5 @@ describe('Offre d\'emploi Controller', () => {
     });
   });
 
-  // Add more unit tests for other controller functions here...
+
 });

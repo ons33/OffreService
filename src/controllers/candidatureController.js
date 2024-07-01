@@ -17,7 +17,7 @@ const sendEmail = (to, subject, html) => {
     from: 'ons.benamorr@gmail.com',
     to,
     subject,
-    html
+    html,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
@@ -42,7 +42,7 @@ const getAcceptanceEmailTemplate = (firstName, jobTitle, entrepriseNom) => {
     </div>
   `;
 };
-
+// Email templates
 const getRejectionEmailTemplate = (firstName, jobTitle, entrepriseNom) => {
   return `
     <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
@@ -55,7 +55,7 @@ const getRejectionEmailTemplate = (firstName, jobTitle, entrepriseNom) => {
   `;
 };
 
-// Controller functions
+// creer Candidature Emploi
 export const creerCandidatureEmploi = async (req, res) => {
   try {
     const { userId, email, jobId } = req.body;
@@ -67,35 +67,51 @@ export const creerCandidatureEmploi = async (req, res) => {
     await candidatureEmploi.save();
     res.status(201).json(candidatureEmploi);
   } catch (error) {
-    console.error('Erreur lors de la création de la candidature à un emploi :', error);
+    console.error(
+      'Erreur lors de la création de la candidature à un emploi :',
+      error
+    );
     res.status(500).json({ error: 'Erreur interne du serveur' });
   }
 };
-
+// get all Candidatures
 export const obtenirToutesCandidaturesEmploi = async (req, res) => {
   try {
-    const candidaturesEmploi = await JobApplication.find().populate('jobId', 'intitule entrepriseNom');
+    const candidaturesEmploi = await JobApplication.find().populate(
+      'jobId',
+      'intitule entrepriseNom'
+    );
     res.json(candidaturesEmploi);
   } catch (error) {
-    console.error('Erreur lors de la récupération des candidatures à un emploi :', error);
+    console.error(
+      'Erreur lors de la récupération des candidatures à un emploi :',
+      error
+    );
     res.status(500).json({ error: 'Erreur interne du serveur' });
   }
 };
-
+// get CandidatureEmploi byid
 export const obtenirCandidatureEmploiParId = async (req, res) => {
   try {
     const candidatureId = req.params.id;
-    const candidatureEmploi = await JobApplication.findById(candidatureId).populate('jobId', 'intitule entrepriseNom');
+    const candidatureEmploi = await JobApplication.findById(
+      candidatureId
+    ).populate('jobId', 'intitule entrepriseNom');
     if (!candidatureEmploi) {
-      return res.status(404).json({ message: 'Candidature à un emploi non trouvée' });
+      return res
+        .status(404)
+        .json({ message: 'Candidature à un emploi non trouvée' });
     }
     res.json(candidatureEmploi);
   } catch (error) {
-    console.error('Erreur lors de la récupération de la candidature à un emploi par ID :', error);
+    console.error(
+      'Erreur lors de la récupération de la candidature à un emploi par ID :',
+      error
+    );
     res.status(500).json({ error: 'Erreur interne du serveur' });
   }
 };
-
+// update JobApplication Status
 export const updateJobApplicationStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -107,18 +123,28 @@ export const updateJobApplicationStatus = async (req, res) => {
     ).populate('jobId', 'intitule entrepriseNom');
 
     if (!updatedApplication) {
-      return res.status(404).json({ message: 'Candidature à un emploi non trouvée' });
+      return res
+        .status(404)
+        .json({ message: 'Candidature à un emploi non trouvée' });
     }
 
-    const firstName = updatedApplication.userId; // Assuming userId is the first name, change this if necessary
+    const firstName = updatedApplication.userId;
     const jobTitle = updatedApplication.jobId.intitule;
     const entrepriseNom = updatedApplication.jobId.entrepriseNom;
 
     if (newStatus === 'Accepter') {
-      const html = getAcceptanceEmailTemplate(firstName, jobTitle, entrepriseNom);
+      const html = getAcceptanceEmailTemplate(
+        firstName,
+        jobTitle,
+        entrepriseNom
+      );
       sendEmail(updatedApplication.email, 'Candidature Acceptée', html);
     } else if (newStatus === 'Rejeter') {
-      const html = getRejectionEmailTemplate(firstName, jobTitle, entrepriseNom);
+      const html = getRejectionEmailTemplate(
+        firstName,
+        jobTitle,
+        entrepriseNom
+      );
       sendEmail(updatedApplication.email, 'Candidature Rejetée', html);
     }
 
@@ -128,25 +154,31 @@ export const updateJobApplicationStatus = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
+// get Candidatures By JobId
 export const getCandidaturesByJobId = async (req, res) => {
   try {
     const { jobId } = req.params;
-    const candidatures = await JobApplication.find({ jobId }).populate('jobId', 'intitule entrepriseNom');
+    const candidatures = await JobApplication.find({ jobId }).populate(
+      'jobId',
+      'intitule entrepriseNom'
+    );
     res.json(candidatures);
   } catch (error) {
     console.error('Error getting candidatures by job ID:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
+// compter Candidatures Par JobId
 export const compterCandidaturesParJobId = async (req, res) => {
   try {
     const { jobId } = req.params;
     const count = await JobApplication.countDocuments({ jobId });
     res.json({ count });
   } catch (error) {
-    console.error('Erreur lors du comptage des candidatures à un emploi :', error);
+    console.error(
+      'Erreur lors du comptage des candidatures à un emploi :',
+      error
+    );
     res.status(500).json({ error: 'Erreur interne du serveur' });
   }
 };

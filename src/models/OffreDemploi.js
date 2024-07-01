@@ -1,5 +1,3 @@
-
-
 import mongoose from 'mongoose';
 
 const OffreEmploiSchema = new mongoose.Schema({
@@ -12,9 +10,8 @@ const OffreEmploiSchema = new mongoose.Schema({
   photo: { type: String, required: false },
   userId: { type: String, required: false },
   tags: [String],
-  skills: [String], // Added skills field
-  createdAt: { type: Date, default: Date.now } // Automatically set the createdAt field to the current date and time
-
+  skills: [String],
+  createdAt: { type: Date, default: Date.now }, 
 });
 
 const OffreEmploi = mongoose.model('OffreEmploi', OffreEmploiSchema);

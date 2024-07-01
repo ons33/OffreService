@@ -22,7 +22,7 @@ app.use('/api/candidature', jobApplicationRoutes);
 app.use('/api', MatchingRoutes);
 
 app.get('/', (req, res) => {
-    res.send('Mouna && Ons Project PFE!');
+  res.send(' Ons Project PFE!');
 });
 
 if (process.env.NODE_ENV !== 'test') {
